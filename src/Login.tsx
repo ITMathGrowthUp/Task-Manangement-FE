@@ -8,7 +8,7 @@ export function Login() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   // Mock authentication function (replace with real API call in production)
-  const handleLogin = (e) => {
+  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault() // Prevent form refresh
     setError('') // Clear previous errors
 
