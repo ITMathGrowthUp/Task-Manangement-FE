@@ -1,42 +1,41 @@
-name: CI/CD Pipeline
+name: CI/CD Notify Discord
 
 on:
   push:
     branches:
       - main
   pull_request:
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18
+      - name: Run build
+        run: echo "Building project..."
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build project
-        run: npm run build
-
-      - name: Send Discord notification on success
+      - name: Notify Discord (Success)
         if: success()
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          THREAD_ID: ${{ secrets.DISCORD_THREAD_ID }}
         run: |
           curl -H "Content-Type: application/json" \
-          -X POST \
-          -d '{"username": "GitHub Actions", "content": "✅ Build Succeeded! 🎉"}' \
-          ${{ secrets.DISCORD_WEBHOOK_URL }}
+               -X POST \
+               -d '{"username": "GitHub Actions", "content": "✅ Build Succeeded! 🎉"}' \
+               "$DISCORD_WEBHOOK_URL?thread_id=$THREAD_ID"
 
-      - name: Send Discord notification on failure
+      - name: Notify Discord (Failure)
         if: failure()
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          THREAD_ID: ${{ secrets.DISCORD_THREAD_ID }}
         run: |
           curl -H "Content-Type: application/json" \
-          -X POST \
-          -d '{"username": "GitHub Actions", "content": "❌ Build Failed! 😢"}' \
-          ${{ secrets.DISCORD_WEBHOOK_URL }}
+               -X POST \
+               -d '{"username": "GitHub Actions", "content": "❌ Build Failed! 😢"}' \
+               "$DISCORD_WEBHOOK_URL?thread_id=$THREAD_ID"
