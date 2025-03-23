@@ -12,6 +12,13 @@ export function Login() {
     e.preventDefault() // Prevent form refresh
     setError('') // Clear previous errors
 
+    // todo: mock call BE for test
+    fetch('http://192.168.2.68:5001/api')
+      .then((rs) => {
+        rs.json().then((_rs) => console.log(_rs))
+      })
+      .catch((e) => console.error(e.message));
+
     // Simulate authentication (e.g., email: "test@example.com", password: "password123")
     if (email === 'test@example.com' && password === 'password123') {
       setIsLoggedIn(true)
