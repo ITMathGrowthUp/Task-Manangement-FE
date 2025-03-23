@@ -12,6 +12,13 @@ export function Login() {
     e.preventDefault() // Prevent form refresh
     setError('') // Clear previous errors
 
+    // todo: mock call BE for test
+    fetch('http://192.168.2.68:5001/api')
+      .then((rs) => {
+        rs.json().then((_rs) => console.log(_rs))
+      })
+      .catch((e) => console.error(e.message));
+
     // Simulate authentication (e.g., email: "test@example.com", password: "password123")
     if (email === 'test@example.com' && password === 'password123') {
       setIsLoggedIn(true)
@@ -68,25 +75,37 @@ export function Login() {
 
         <div>
           <button type='submit'>
-            <img src={'./google.svg'} />
+            <img src={'./google.svg'} alt={'GoogleLogo'} />
             Continue with Google
           </button>
           <button type='submit'>
-            <img src={'./microsoft.svg'} />
+            <img src={'./microsoft.svg'} alt={'MicrosoftLogo'} />
             Continue with Microsoft
           </button>
           <button type='submit'>
-            <img src={'./apple.svg'} />
+            <img src={'./apple.svg'} alt={'AppleLogo'} />
             Continue with Apple
           </button>
           <button type='submit'>
-            <img src={'./slack.svg'} />
+            <img src={'./slack.svg'} alt={'SlackLogo'} />
             Continue with Slack
           </button>
         </div>
         <div>
-          <label>Can't log in?</label>
-          <label>Sign up for an account</label>
+          <a
+            href={
+              'https://icdn.24h.com.vn/upload/4-2024/images/2024-11-22/1732262807-hot-girl-xinh-dep-cham-dien-ao-lung-quan-ngan-cun-khoe-dang-hinh-2-width615height800.jpg'
+            }
+          >
+            Can't log in?
+          </a>
+          <a
+            href={
+              'https://icdn.24h.com.vn/upload/4-2024/images/2024-11-22/1732262807-hot-girl-xinh-dep-cham-dien-ao-lung-quan-ngan-cun-khoe-dang-hinh-2-width615height800.jpg'
+            }
+          >
+            Sign up for an account
+          </a>
         </div>
       </form>
     </div>
