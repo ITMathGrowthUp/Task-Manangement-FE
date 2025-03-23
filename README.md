@@ -61,3 +61,5 @@ export default tseslint.config({
   },
 })
 ```
+# CI/CD with GitHub Actions & Discord Notifications
+[Workflow README](.github/workflows/readme.md)
