@@ -1,8 +1,8 @@
 import { useState } from 'react'
+import { BackEndAPI } from '../consts'
 
 export function Login() {
-  // State for form inputs and login status
-  const [email, setEmail] = useState('')
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -13,25 +13,24 @@ export function Login() {
     setError('') // Clear previous errors
 
     // todo: mock call BE for test
-    fetch('http://192.168.2.68:5001/api')
+    fetch(BackEndAPI)
       .then((rs) => {
         rs.json().then((_rs) => console.log(_rs))
       })
-      .catch((e) => console.error(e.message));
+      .catch((e) => console.error(e.message))
 
-    // Simulate authentication (e.g., email: "test@example.com", password: "password123")
-    if (email === 'test@example.com' && password === 'password123') {
+    if (username === 'admin' && password === 'password') {
       setIsLoggedIn(true)
       console.log('Login successful!')
     } else {
-      setError('Invalid email or password')
+      setError('Invalid username or password')
     }
   }
 
   // Logout function
   const handleLogout = () => {
     setIsLoggedIn(false)
-    setEmail('')
+    setUsername('')
     setPassword('')
     setError('')
   }
@@ -41,7 +40,7 @@ export function Login() {
     return (
       <div className='login-container'>
         <h2>Welcome!</h2>
-        <p>You are logged in as {email}.</p>
+        <p>You are logged in as {username}.</p>
         <button onClick={handleLogout}>Logout</button>
       </div>
     )
@@ -52,8 +51,14 @@ export function Login() {
       <h2>Login</h2>
       <form onSubmit={handleLogin}>
         <div className='form-group'>
-          <label>Email:</label>
-          <input type='email' value={email} onChange={(e) => setEmail(e.target.value)} placeholder='value' required />
+          <label>Username:</label>
+          <input
+            type='text'
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder='value'
+            required
+          />
         </div>
 
         <div className='form-group'>
@@ -72,42 +77,41 @@ export function Login() {
           Remember me
         </label>
         <button type='submit'>Sign in</button>
-
-        <div>
-          <button type='submit'>
-            <img src={'./google.svg'} alt={'GoogleLogo'} />
-            Continue with Google
-          </button>
-          <button type='submit'>
-            <img src={'./microsoft.svg'} alt={'MicrosoftLogo'} />
-            Continue with Microsoft
-          </button>
-          <button type='submit'>
-            <img src={'./apple.svg'} alt={'AppleLogo'} />
-            Continue with Apple
-          </button>
-          <button type='submit'>
-            <img src={'./slack.svg'} alt={'SlackLogo'} />
-            Continue with Slack
-          </button>
-        </div>
-        <div>
-          <a
-            href={
-              'https://icdn.24h.com.vn/upload/4-2024/images/2024-11-22/1732262807-hot-girl-xinh-dep-cham-dien-ao-lung-quan-ngan-cun-khoe-dang-hinh-2-width615height800.jpg'
-            }
-          >
-            Can't log in?
-          </a>
-          <a
-            href={
-              'https://icdn.24h.com.vn/upload/4-2024/images/2024-11-22/1732262807-hot-girl-xinh-dep-cham-dien-ao-lung-quan-ngan-cun-khoe-dang-hinh-2-width615height800.jpg'
-            }
-          >
-            Sign up for an account
-          </a>
-        </div>
       </form>
+      <div>
+        <button type='submit'>
+          <img src={'./google.svg'} alt={'GoogleLogo'} />
+          Continue with Google
+        </button>
+        <button type='submit'>
+          <img src={'./microsoft.svg'} alt={'MicrosoftLogo'} />
+          Continue with Microsoft
+        </button>
+        <button type='submit'>
+          <img src={'./apple.svg'} alt={'AppleLogo'} />
+          Continue with Apple
+        </button>
+        <button type='submit'>
+          <img src={'./slack.svg'} alt={'SlackLogo'} />
+          Continue with Slack
+        </button>
+      </div>
+      <div>
+        <a
+          href={
+            'https://icdn.24h.com.vn/upload/4-2024/images/2024-11-22/1732262807-hot-girl-xinh-dep-cham-dien-ao-lung-quan-ngan-cun-khoe-dang-hinh-2-width615height800.jpg'
+          }
+        >
+          Can't log in?
+        </a>
+        <a
+          href={
+            'https://icdn.24h.com.vn/upload/4-2024/images/2024-11-22/1732262807-hot-girl-xinh-dep-cham-dien-ao-lung-quan-ngan-cun-khoe-dang-hinh-2-width615height800.jpg'
+          }
+        >
+          Sign up for an account
+        </a>
+      </div>
     </div>
   )
 }
