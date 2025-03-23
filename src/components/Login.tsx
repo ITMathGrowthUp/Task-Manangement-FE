@@ -12,7 +12,6 @@ export function Login() {
     e.preventDefault() // Prevent form refresh
     setError('') // Clear previous errors
 
-
     // Simulate authentication (e.g., email: "test@example.com", password: "password123")
     if (email === 'test@example.com' && password === 'password123') {
       setIsLoggedIn(true)
