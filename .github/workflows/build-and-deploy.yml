@@ -22,8 +22,10 @@ jobs:
       - uses: pnpm/action-setup@v4
         with:
           version: 10
+
       - name: Install dependencies
         run: pnpm install
+
       - name: Build project
         run: pnpm run build
 
@@ -51,3 +53,21 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
+
+      - name: Notify Discord (Success)
+        if: success()
+        env:
+          BOT_SERVER_URL: "https://03ff-14-177-243-93.ngrok-free.app/send"
+        run: |
+          curl -X POST "$BOT_SERVER_URL" \
+               -H "Content-Type: application/json" \
+               -d '{"status": "success", "message": "✅ Deployment successful!"}'
+
+      - name: Notify Discord (Failure)
+        if: failure()
+        env:
+          BOT_SERVER_URL: "https://03ff-14-177-243-93.ngrok-free.app/send"
+        run: |
+          curl -X POST "$BOT_SERVER_URL" \
+               -H "Content-Type: application/json" \
+               -d '{"status": "fail", "message": "❌ Deployment failed!"}'
