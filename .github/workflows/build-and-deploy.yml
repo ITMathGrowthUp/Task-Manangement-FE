@@ -8,47 +8,63 @@ on:
   workflow_dispatch: # Allows you to run the workflow manually
 
 jobs:
-  build:
-    name: Build
+  build_and_package:
+    name: Build and Package
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v4
 
       - uses: pnpm/action-setup@v4
         with:
           version: 10
 
+      - name: Restore dependencies cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.pnpm-store
+          key: pnpm-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-${{ runner.os }}-
+
       - name: Install dependencies
         run: pnpm install
+
+      - name: Restore build cache
+        uses: actions/cache@v3
+        with:
+          path: ./dist
+          key: build-${{ runner.os }}-${{ github.sha }}
+          restore-keys: |
+            build-${{ runner.os }}-
 
       - name: Build project
         run: pnpm run build
 
-      - name: Upload production-ready build files
+      - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: production-files
           path: ./dist
 
-  deploy:
-    name: Deploy
-    needs: build
+  deploy_to_render:
+    name: Deploy to Render
+    needs: build_and_package
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
 
     steps:
-      - name: Download artifact
+      - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
           name: production-files
           path: ./dist
 
-      - name: Deploy to Render
+      - name: Trigger Render Deployment
         env:
           RENDER_SERVICE_ID: ${{ secrets.RENDER_SERVICE_ID }}
           RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
@@ -57,7 +73,13 @@ jobs:
             -H "Accept: application/json" \
             -H "Authorization: Bearer $RENDER_API_KEY"
 
-      - name: Notify Discord (Success)
+  notify_discord:
+    name: Notify Discord
+    needs: deploy_to_render
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send Success Notification
         if: success()
         env:
           BOT_SERVER_URL: "https://03ff-14-177-243-93.ngrok-free.app/send"
@@ -66,7 +88,7 @@ jobs:
                -H "Content-Type: application/json" \
                -d '{"status": "success", "message": "✅ Deployment successful!"}'
 
-      - name: Notify Discord (Failure)
+      - name: Send Failure Notification
         if: failure()
         env:
           BOT_SERVER_URL: "https://03ff-14-177-243-93.ngrok-free.app/send"
