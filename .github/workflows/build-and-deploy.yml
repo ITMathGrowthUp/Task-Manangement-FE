@@ -82,7 +82,7 @@ jobs:
       - name: Send Success Notification
         if: success()
         env:
-          BOT_SERVER_URL: "https://03ff-14-177-243-93.ngrok-free.app/send"
+          BOT_SERVER_URL: "https://discord-notify-bot-jw61.onrender.com/send"
         run: |
           curl -X POST "$BOT_SERVER_URL" \
                -H "Content-Type: application/json" \
@@ -91,7 +91,7 @@ jobs:
       - name: Send Failure Notification
         if: failure()
         env:
-          BOT_SERVER_URL: "https://03ff-14-177-243-93.ngrok-free.app/send"
+          BOT_SERVER_URL: "https://discord-notify-bot-jw61.onrender.com/send"
         run: |
           curl -X POST "$BOT_SERVER_URL" \
                -H "Content-Type: application/json" \
