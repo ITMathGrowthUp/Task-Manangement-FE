@@ -1,5 +1,5 @@
 import { loginApi } from '../base'
-import { createContext, useState } from 'react'
+import { createContext, ReactNode, useState } from 'react'
 
 // todo: destructure
 
@@ -10,6 +10,10 @@ interface AuthContextType {
   handleLogin: (username: string, password: string) => void
   handleLogout: () => void
   error: string
+}
+
+interface AuthProviderProps {
+  children: ReactNode
 }
 
 const defaultAuthContext: AuthContextType = {
@@ -26,12 +30,12 @@ const defaultAuthContext: AuthContextType = {
 
 export const AuthContext = createContext<AuthContextType>(defaultAuthContext)
 
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [accessToken, setAccessToken] = useState(null)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [error, setError] = useState('')
 
-  const handleLogin = async (username, password) => {
+  const handleLogin = async (username: string, password: string) => {
     try {
       setError('')
       const urlencoded = new URLSearchParams()
