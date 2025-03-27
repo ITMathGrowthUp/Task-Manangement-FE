@@ -1,47 +1,44 @@
-import { useState } from 'react'
-import { BackEndAPI } from '../consts'
+import { useContext, useState } from 'react'
+import { AuthContext } from '../context/AuthContext.tsx'
+
+// todo: convert JSX -> React Node
 
 export function Login() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
-  // Mock authentication function (replace with real API call in production)
-  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+  const authContext = useContext(AuthContext)
+  const { handleLogout, handleLogin, isAuthenticated, error } = authContext
+
+  const _handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault() // Prevent form refresh
-    setError('') // Clear previous errors
-
-    // todo: mock call BE for test
-    fetch(BackEndAPI)
-      .then((rs) => {
-        rs.json().then((_rs) => console.log(_rs))
-      })
-      .catch((e) => console.error(e.message))
-
-    if (username === 'admin' && password === 'password') {
-      setIsLoggedIn(true)
-      console.log('Login successful!')
-    } else {
-      setError('Invalid username or password')
-    }
+    handleLogin(username, password)
   }
 
-  // Logout function
-  const handleLogout = () => {
-    setIsLoggedIn(false)
-    setUsername('')
-    setPassword('')
-    setError('')
+  const handleGoogleLogin = () => {
+    // Replace with your actual Google OAuth URL
+    window.location.href = 'https://img.docnhanh.vn/images/uploads/2023/12/02/3478946031435033537243133962557857865856882n-17015041414671485356860.jpeg'
+  }
+
+  const handleMicrosoftLogin = () => {
+    window.location.href = 'https://dermamedtic.vn/wp-content/uploads/2023/12/gai-xinh-han-quoc-2-1.jpg'
+  }
+
+  const handleAppleLogin = () => {
+    window.location.href = 'https://thanhnien.mediacdn.vn/uploaded/voba/2021_06_15/6_NPFA.jpg?width=500'
+  }
+
+  const handleSlackLogin = () => {
+    window.location.href = 'https://anhavatar.com/wp-content/uploads/2025/01/anh-chup-hotgirl-insta.jpg'
   }
 
   // Conditional rendering based on login status
-  if (isLoggedIn) {
+  if (isAuthenticated) {
     return (
       <div className='login-container'>
         <h2>Welcome!</h2>
         <p>You are logged in as {username}.</p>
-        <button onClick={handleLogout}>Logout</button>
+        <button onClick={() => handleLogout()}>Logout</button>
       </div>
     )
   }
@@ -49,9 +46,9 @@ export function Login() {
   return (
     <div className='login-container'>
       <h2>Login</h2>
-      <form onSubmit={handleLogin}>
+      <form onSubmit={_handleLogin}>
         <div className='form-group'>
-          <label>Username:</label>
+          <label>Username</label>
           <input
             type='text'
             value={username}
@@ -60,9 +57,8 @@ export function Login() {
             required
           />
         </div>
-
         <div className='form-group'>
-          <label>Password:</label>
+          <label>Password</label>
           <input
             type='password'
             value={password}
@@ -79,19 +75,19 @@ export function Login() {
         <button type='submit'>Sign in</button>
       </form>
       <div>
-        <button type='submit'>
+        <button type='submit' onClick={handleGoogleLogin}>
           <img src={'./google.svg'} alt={'GoogleLogo'} />
           Continue with Google
         </button>
-        <button type='submit'>
+        <button type='submit' onClick={handleMicrosoftLogin}>
           <img src={'./microsoft.svg'} alt={'MicrosoftLogo'} />
           Continue with Microsoft
         </button>
-        <button type='submit'>
+        <button type='submit' onClick={handleAppleLogin}>
           <img src={'./apple.svg'} alt={'AppleLogo'} />
           Continue with Apple
         </button>
-        <button type='submit'>
+        <button type='submit' onClick={handleSlackLogin}>
           <img src={'./slack.svg'} alt={'SlackLogo'} />
           Continue with Slack
         </button>
@@ -104,6 +100,7 @@ export function Login() {
         >
           Can't log in?
         </a>
+        <span> &#x2022; </span>
         <a
           href={
             'https://icdn.24h.com.vn/upload/4-2024/images/2024-11-22/1732262807-hot-girl-xinh-dep-cham-dien-ao-lung-quan-ngan-cun-khoe-dang-hinh-2-width615height800.jpg'
