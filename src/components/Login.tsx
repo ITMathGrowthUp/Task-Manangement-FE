@@ -106,7 +106,7 @@ export function Login() {
             'https://icdn.24h.com.vn/upload/4-2024/images/2024-11-22/1732262807-hot-girl-xinh-dep-cham-dien-ao-lung-quan-ngan-cun-khoe-dang-hinh-2-width615height800.jpg'
           }
         >
-          Sign up for an account hêhhee
+          Sign up for an account
         </a>
       </div>
     </div>
