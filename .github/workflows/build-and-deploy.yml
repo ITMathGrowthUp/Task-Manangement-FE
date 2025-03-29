@@ -86,7 +86,8 @@ jobs:
         run: |
           curl -X POST "$BOT_SERVER_URL" \
                -H "Content-Type: application/json" \
-               -d '{"status": "success", "message": "✅ Deployment successful!"}'
+               -d '{"status": "success", "message": "✅ Deployment successful!", 
+          "triggered_by": "${{ github.actor }}"}'
 
       - name: Send Failure Notification
         if: failure()
@@ -95,4 +96,5 @@ jobs:
         run: |
           curl -X POST "$BOT_SERVER_URL" \
                -H "Content-Type: application/json" \
-               -d '{"status": "fail", "message": "❌ Deployment failed!"}'
+               -d '{"status": "fail", "message": "❌ Deployment failed!",
+          "triggered_by": "${{ github.actor }}"}'
