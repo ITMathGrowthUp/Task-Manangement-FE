@@ -1,5 +1,6 @@
-import { useContext, useState } from 'react'
-import { AuthContext } from '../context/AuthContext.tsx'
+import { useState } from 'react'
+import { useAuth } from '../context/AuthContext.tsx'
+import { Link } from 'react-router-dom'
 
 // todo: convert JSX -> React Node
 
@@ -7,7 +8,7 @@ export function Login() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-  const authContext = useContext(AuthContext)
+  const authContext = useAuth()
   const { handleLogout, handleLogin, isAuthenticated, error } = authContext
 
   const _handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
@@ -17,7 +18,8 @@ export function Login() {
 
   const handleGoogleLogin = () => {
     // Replace with your actual Google OAuth URL
-    window.location.href = 'https://img.docnhanh.vn/images/uploads/2023/12/02/3478946031435033537243133962557857865856882n-17015041414671485356860.jpeg'
+    window.location.href =
+      'https://img.docnhanh.vn/images/uploads/2023/12/02/3478946031435033537243133962557857865856882n-17015041414671485356860.jpeg'
   }
 
   const handleMicrosoftLogin = () => {
@@ -101,13 +103,7 @@ export function Login() {
           Can't log in?
         </a>
         <span> &#x2022; </span>
-        <a
-          href={
-            'https://icdn.24h.com.vn/upload/4-2024/images/2024-11-22/1732262807-hot-girl-xinh-dep-cham-dien-ao-lung-quan-ngan-cun-khoe-dang-hinh-2-width615height800.jpg'
-          }
-        >
-          Sign up for an account
-        </a>
+        <Link to='/register'>Sign up for an account</Link>
       </div>
     </div>
   )
