@@ -9,7 +9,7 @@ interface AuthContextType {
   isAuthenticated: boolean
   handleLogin: (username: string, password: string) => void
   handleLogout: () => void
-  handleRegister: (username: string, password: string, email: string) => void
+  handleRegister: (username: string, password: string, email: string) => boolean
   error: string
 }
 
