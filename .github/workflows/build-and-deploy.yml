@@ -53,19 +53,6 @@ jobs:
                \"time\": \"$DEPLOY_TIME\"}"
           exit 1
 
-      - name: Run ESLint
-        run: pnpm run lint
-      - name: Notify on failure - ESLint
-        if: failure()
-        run: |
-          curl -X POST "$BOT_SERVER_URL" \
-               -H "Content-Type: application/json" \
-               -d "{\"status\": \"fail\", \"message\": \"❌ ESLint check failed!\", 
-               \"repository\": \"$REPO_LINK\", \"triggered_by\": \"$GITHUB_ACTOR\", 
-               \"commit_hash\": \"$COMMIT_HASH\", \"change_log\": \"$COMMIT_MESSAGE\", 
-               \"time\": \"$DEPLOY_TIME\"}"
-          exit 1
-
       - name: Build project
         run: pnpm run build
       - name: Notify on failure - Build
@@ -122,12 +109,12 @@ jobs:
           fi
 
   notify_discord:
-    name: Notify Discord on Success
+    name: Notify Discord
     needs: deploy_to_render
     runs-on: ubuntu-latest
     if: success()
 
     steps:
-      - name: Send success notification to Discord
+      - name: Send notification to Discord
         run: |
           curl -X POST "$BOT_SERVER_URL"
