@@ -83,11 +83,11 @@ jobs:
         if: success()
         env:
           BOT_SERVER_URL: "https://discord-notify-bot-jw61.onrender.com/send"
+          GITHUB_ACTOR: ${{ github.actor }}
         run: |
           curl -X POST "$BOT_SERVER_URL" \
                -H "Content-Type: application/json" \
-               -d '{"status": "success", "message": "✅ Deployment successful!", 
-          "triggered_by": "${{ github.actor }}"}'
+               -d "{\"status\": \"success\", \"message\": \"✅ Deployment successful!\", \"triggered_by\": \"$GITHUB_ACTOR\"}"
 
       - name: Send Failure Notification
         if: failure()
