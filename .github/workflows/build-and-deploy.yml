@@ -77,13 +77,13 @@ jobs:
     runs-on: ubuntu-latest
     env:
       BOT_SERVER_URL: "https://discord-notify-bot-jw61.onrender.com/send"
+      REPO_LINK: "https://github.com/${{ github.repository }}"
       GITHUB_ACTOR: ${{ github.actor }}
+      COMMIT_HASH: ${{ github.sha }}
+      COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+      DEPLOY_TIME: ${{ github.event.head_commit.timestamp }}
 
     steps:
-      - name: Check GitHub Actor
-        run: |
-          echo "Triggered by: $GITHUB_ACTOR"
-
       - name: Send Deployment Notification
         run: |
           STATUS="success"
@@ -96,4 +96,4 @@ jobs:
 
           curl -X POST "$BOT_SERVER_URL" \
                -H "Content-Type: application/json" \
-               -d "{\"status\": \"$STATUS\", \"message\": \"$MESSAGE\", \"triggered_by\": \"$GITHUB_ACTOR\"}"
+               -d "{\"status\": \"$STATUS\", \"message\": \"$MESSAGE\", \"repository\": \"$REPO_LINK\", \"triggered_by\": \"$GITHUB_ACTOR\", \"commit_hash\": \"$COMMIT_HASH\", \"change_log\": \"$COMMIT_MESSAGE\", \"time\": \"$DEPLOY_TIME\"}"
