@@ -45,69 +45,80 @@ export function Login() {
 
   return (
     <div className='login-container'>
-      <h2>Login</h2>
-      <form onSubmit={_handleLogin}>
-        <div className='form-group'>
-          <label>Username</label>
-          <input
-            type='text'
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            placeholder='value'
-            required
-          />
+      <h1>Tittle here</h1>
+      <div className='login-main-container'>
+        <div className='login-picture'>
+          <img src="./home.png" alt="Login home picture" />
         </div>
-        <div className='form-group'>
-          <label>Password</label>
-          <input
-            type='password'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder='value'
-            required
-          />
+        <div className='login'>
+          <form onSubmit={_handleLogin}>
+            <div className='login-form-group'>
+              <label>Username</label>
+              <input
+                type='text'
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder='Guest 123'
+                required
+              />
+            </div>
+            <div className='login-form-group'>
+              <label>Password</label>
+              <input
+                type='password'
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder='Minimum 8 characters'
+                required
+              />
+            </div>
+            {error && <p className='error'>{error}</p>}
+            <label>
+              <input type='checkbox' />
+              Remember me
+            </label>
+            <button type='submit'>Sign in</button>
+          </form>
+          <div className="login-others">
+            <div className="login-options">
+              <button type='submit' onClick={handleGoogleLogin}>
+                <img src={'./google.svg'} alt={'GoogleLogo'} />
+                <p>Continue with Google</p>
+              </button>
+              <button type='submit' onClick={handleMicrosoftLogin}>
+                <img src={'./microsoft.svg'} alt={'MicrosoftLogo'} />
+                <p>Continue with Microsoft</p>
+              </button>
+              <button type='submit' onClick={handleAppleLogin}>
+                <img src={'./apple.svg'} alt={'AppleLogo'} />
+                <p>Continue with Apple</p>
+              </button>
+              <button type='submit' onClick={handleSlackLogin}>
+                <img src={'./slack.svg'} alt={'SlackLogo'} />
+                <p>Continue with Slack</p>
+              </button>
+            </div>
+            <div className="login-anothers">
+              <div>
+                <a
+                  href={
+                    'https://icdn.24h.com.vn/upload/4-2024/images/2024-11-22/1732262807-hot-girl-xinh-dep-cham-dien-ao-lung-quan-ngan-cun-khoe-dang-hinh-2-width615height800.jpg'
+                  }
+                >
+                  Can't log in?
+                </a>
+                <span> &#x2022; </span>
+                <a
+                  href={
+                    'https://icdn.24h.com.vn/upload/4-2024/images/2024-11-22/1732262807-hot-girl-xinh-dep-cham-dien-ao-lung-quan-ngan-cun-khoe-dang-hinh-2-width615height800.jpg'
+                  }
+                >
+                  Sign up for an account
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
-        {error && <p className='error'>{error}</p>}
-        <label>
-          <input type='checkbox' />
-          Remember me
-        </label>
-        <button type='submit'>Sign in</button>
-      </form>
-      <div>
-        <button type='submit' onClick={handleGoogleLogin}>
-          <img src={'./google.svg'} alt={'GoogleLogo'} />
-          Continue with Google
-        </button>
-        <button type='submit' onClick={handleMicrosoftLogin}>
-          <img src={'./microsoft.svg'} alt={'MicrosoftLogo'} />
-          Continue with Microsoft
-        </button>
-        <button type='submit' onClick={handleAppleLogin}>
-          <img src={'./apple.svg'} alt={'AppleLogo'} />
-          Continue with Apple
-        </button>
-        <button type='submit' onClick={handleSlackLogin}>
-          <img src={'./slack.svg'} alt={'SlackLogo'} />
-          Continue with Slack
-        </button>
-      </div>
-      <div>
-        <a
-          href={
-            'https://icdn.24h.com.vn/upload/4-2024/images/2024-11-22/1732262807-hot-girl-xinh-dep-cham-dien-ao-lung-quan-ngan-cun-khoe-dang-hinh-2-width615height800.jpg'
-          }
-        >
-          Can't log in?
-        </a>
-        <span> &#x2022; </span>
-        <a
-          href={
-            'https://icdn.24h.com.vn/upload/4-2024/images/2024-11-22/1732262807-hot-girl-xinh-dep-cham-dien-ao-lung-quan-ngan-cun-khoe-dang-hinh-2-width615height800.jpg'
-          }
-        >
-          Sign up for an account
-        </a>
       </div>
     </div>
   )

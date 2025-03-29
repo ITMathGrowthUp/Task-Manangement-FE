@@ -1,3 +1,10 @@
+body{
+  margin: 0;
+  max-width: 100%;
+  overflow-x: hidden;
+  font-size: 1vw;
+}
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -5,7 +12,6 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -22,36 +28,129 @@ a:hover {
   color: #535bf2;
 }
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
+.login-container {
+  background-color: #dad6d6;
   min-height: 100vh;
+  width: calc(100vw - 6em);
+  display: flex;
+  padding: 1em 3em;
+  flex-direction: column;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+.login-container > h1{
+  font-size: 3em;
+  color: white;
+  text-decoration: underline;
+  text-align: left;
 }
 
-button {
+.login-main-container{
+  display: flex;
+  gap: 5em;
+}
+
+.login-picture{
+  width: 60%;
+  position: relative;
+}
+.login-picture > img{
+  position: absolute;
+  left: 0;
+  width: 100%;
+}
+
+.login{
+  width: 40%;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 1em;
+  gap: 1em;
+}
+
+.login > form {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.login > form > button {
+  background-color: black;
+  color: white;
+  border-radius: 0.5em;
+  font-size: 1.5em;
+  height: 2.5em;
+}
+
+.login-form-group{
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.login-form-group > label{
+  font-size: large;
+  font-weight: 1000;
+}
+
+.login-form-group > input{
+  height: 2em;
+  padding: 1em;
+  font-size: 1em;  
+  border: 1px solid #ccc;
+  border-radius: 0.5em;
+}
+
+.login-others{
+  display: flex;
+  flex-direction: column;
+  border: none;
+  padding: 2em 3em;
+  gap: 2em;
+  box-shadow: 0.2em 0.2em 0.2em 0.2em #ccc;
+}
+
+.login-options {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+.login-options > button {
   border-radius: 8px;
   border: 1px solid transparent;
-  padding: 0.6em 1.2em;
+  background-color: white;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
+  box-shadow: 0.1em 0.1em 0.1em 0.1em #ccc;
+  display: flex;
+  align-items: center;
 }
-button:hover {
+
+.login-options > button:hover {
   border-color: #646cff;
 }
-button:focus,
-button:focus-visible {
+.login-options > button:focus,
+.login-options > button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+.login-options > button > img {
+  height: 2em;
+  width: 20%;
+}
+.login-options > button > p {
+  width: 80%;
+  justify-self: center;
+}
+
+.login-anothers{
+  border-top: 0.1em solid #ccc;
+  padding: 1em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 @media (prefers-color-scheme: light) {
