@@ -1,5 +1,5 @@
-import { loginApi } from '../base'
-import { createContext, ReactNode, useState } from 'react'
+import { loginApi, registerApi } from '../base'
+import { createContext, ReactNode, useContext, useState } from 'react'
 
 // todo: destructure
 
@@ -9,6 +9,7 @@ interface AuthContextType {
   isAuthenticated: boolean
   handleLogin: (username: string, password: string) => void
   handleLogout: () => void
+  handleRegister: (username: string, password: string, email: string) => Promise<boolean>
   error: string
 }
 
@@ -23,6 +24,9 @@ const defaultAuthContext: AuthContextType = {
     throw new Error('AuthContext is not initialized. Did you forget the Provider?')
   },
   handleLogout: () => {
+    throw new Error('AuthContext is not initialized. Did you forget the Provider?')
+  },
+  handleRegister: () => {
     throw new Error('AuthContext is not initialized. Did you forget the Provider?')
   },
   error: ''
@@ -60,14 +64,46 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   }
 
+  const handleRegister = async (username: string, password: string, email: string) => {
+    try {
+      setError('')
+      const urlencoded = new URLSearchParams()
+      urlencoded.append('username', username)
+      urlencoded.append('password', password)
+      urlencoded.append('email', email)
+
+      const response = await fetch(registerApi, {
+        method: 'POST',
+        body: urlencoded
+      })
+
+      console.log('response', response)
+      console.log('response123', response.status)
+
+      if (response.ok && response.status === 201) {
+        return true
+      } else {
+        setError('Invalid')
+        return false
+      }
+    } catch (error) {
+      console.error('Register failed:', error)
+      return false
+    }
+  }
+
   const handleLogout = () => {
     setAccessToken(null)
     setIsAuthenticated(false)
   }
 
   return (
-    <AuthContext.Provider value={{ accessToken, error, isAuthenticated, handleLogin, handleLogout }}>
+    <AuthContext.Provider value={{ accessToken, error, isAuthenticated, handleLogin, handleLogout, handleRegister }}>
       {children}
     </AuthContext.Provider>
   )
+}
+
+export function useAuth() {
+  return useContext(AuthContext)
 }

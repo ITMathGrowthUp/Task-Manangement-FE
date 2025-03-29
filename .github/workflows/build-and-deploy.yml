@@ -1,11 +1,20 @@
-name: Deploy
+name: CI/CD Pipeline
 
 on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
-  workflow_dispatch: # Allows you to run the workflow manually
+env:
+  BOT_SERVER_URL: ${{ secrets.BOT_SERVER_URL }}
+  REPO_LINK: "https://github.com/${{ github.repository }}/commit/${{ github.sha }}"
+  GITHUB_ACTOR: ${{ github.actor }}
+  COMMIT_HASH: ${{ github.sha }}
+  COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+  DEPLOY_TIME: ${{ github.event.head_commit.timestamp }}
 
 jobs:
   build_and_package:
@@ -19,7 +28,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
 
-      - uses: pnpm/action-setup@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
         with:
           version: 10
 
@@ -28,28 +38,42 @@ jobs:
         with:
           path: ~/.pnpm-store
           key: pnpm-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
-          restore-keys: |
-            pnpm-${{ runner.os }}-
+          restore-keys: pnpm-${{ runner.os }}-
 
       - name: Install dependencies
         run: pnpm install
-
-      - name: Restore build cache
-        uses: actions/cache@v3
-        with:
-          path: ./dist
-          key: build-${{ runner.os }}-${{ github.sha }}
-          restore-keys: |
-            build-${{ runner.os }}-
+      - name: Notify on failure - Dependencies
+        if: failure()
+        run: |
+          curl -X POST "$BOT_SERVER_URL" \
+               -H "Content-Type: application/json" \
+               -d "{\"status\": \"fail\", \"message\": \"❌ Dependency installation failed!\", 
+               \"repository\": \"$REPO_LINK\", \"triggered_by\": \"$GITHUB_ACTOR\", 
+               \"commit_hash\": \"$COMMIT_HASH\", \"change_log\": \"$COMMIT_MESSAGE\", 
+               \"time\": \"$DEPLOY_TIME\"}"
+          exit 1
 
       - name: Build project
         run: pnpm run build
+      - name: Notify on failure - Build
+        if: failure()
+        run: |
+          curl -X POST "$BOT_SERVER_URL" \
+               -H "Content-Type: application/json" \
+               -d "{\"status\": \"fail\", \"message\": \"❌ Build failed!\", 
+               \"repository\": \"$REPO_LINK\", \"triggered_by\": \"$GITHUB_ACTOR\", 
+               \"commit_hash\": \"$COMMIT_HASH\", \"change_log\": \"$COMMIT_MESSAGE\", 
+               \"time\": \"$DEPLOY_TIME\"}"
+          exit 1
 
-      - name: Upload build artifacts
+      - name: Package production files
+        run: tar -czf production-files.tar.gz dist
+
+      - name: Upload production files
         uses: actions/upload-artifact@v4
         with:
           name: production-files
-          path: ./dist
+          path: production-files.tar.gz
 
   deploy_to_render:
     name: Deploy to Render
@@ -70,29 +94,16 @@ jobs:
           RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
         run: |
           curl -X POST "https://api.render.com/v1/services/$RENDER_SERVICE_ID/deploys" \
-            -H "Accept: application/json" \
-            -H "Authorization: Bearer $RENDER_API_KEY"
+               -H "Accept: application/json" \
+               -H "Authorization: Bearer $RENDER_API_KEY"
 
   notify_discord:
     name: Notify Discord
     needs: deploy_to_render
     runs-on: ubuntu-latest
+    if: success()
 
     steps:
-      - name: Send Success Notification
-        if: success()
-        env:
-          BOT_SERVER_URL: "https://discord-notify-bot-jw61.onrender.com/send"
+      - name: Send notification to Discord
         run: |
-          curl -X POST "$BOT_SERVER_URL" \
-               -H "Content-Type: application/json" \
-               -d '{"status": "success", "message": "✅ Deployment successful!"}'
-
-      - name: Send Failure Notification
-        if: failure()
-        env:
-          BOT_SERVER_URL: "https://discord-notify-bot-jw61.onrender.com/send"
-        run: |
-          curl -X POST "$BOT_SERVER_URL" \
-               -H "Content-Type: application/json" \
-               -d '{"status": "fail", "message": "❌ Deployment failed!"}'
+          curl -X POST "$BOT_SERVER_URL"
