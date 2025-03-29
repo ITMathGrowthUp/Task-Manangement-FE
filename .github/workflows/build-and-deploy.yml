@@ -1,10 +1,20 @@
-name: Deploy
+name: CI/CD Pipeline
 
 on:
   push:
     branches:
       - main
-  workflow_dispatch: # Allows manual workflow execution
+  pull_request:
+    branches:
+      - main
+
+env:
+  BOT_SERVER_URL: ${{ secrets.BOT_SERVER_URL }}
+  REPO_LINK: "https://github.com/${{ github.repository }}/commit/${{ github.sha }}"
+  GITHUB_ACTOR: ${{ github.actor }}
+  COMMIT_HASH: ${{ github.sha }}
+  COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+  DEPLOY_TIME: ${{ github.event.head_commit.timestamp }}
 
 jobs:
   build_and_package:
@@ -32,22 +42,51 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
+      - name: Notify on failure - Dependencies
+        if: failure()
+        run: |
+          curl -X POST "$BOT_SERVER_URL" \
+               -H "Content-Type: application/json" \
+               -d "{\"status\": \"fail\", \"message\": \"❌ Dependency installation failed!\", 
+               \"repository\": \"$REPO_LINK\", \"triggered_by\": \"$GITHUB_ACTOR\", 
+               \"commit_hash\": \"$COMMIT_HASH\", \"change_log\": \"$COMMIT_MESSAGE\", 
+               \"time\": \"$DEPLOY_TIME\"}"
+          exit 1
 
-      - name: Restore build cache
-        uses: actions/cache@v3
-        with:
-          path: ./dist
-          key: build-${{ runner.os }}-${{ github.sha }}
-          restore-keys: build-${{ runner.os }}-
+      - name: Run ESLint
+        run: pnpm run lint
+      - name: Notify on failure - ESLint
+        if: failure()
+        run: |
+          curl -X POST "$BOT_SERVER_URL" \
+               -H "Content-Type: application/json" \
+               -d "{\"status\": \"fail\", \"message\": \"❌ ESLint check failed!\", 
+               \"repository\": \"$REPO_LINK\", \"triggered_by\": \"$GITHUB_ACTOR\", 
+               \"commit_hash\": \"$COMMIT_HASH\", \"change_log\": \"$COMMIT_MESSAGE\", 
+               \"time\": \"$DEPLOY_TIME\"}"
+          exit 1
 
       - name: Build project
         run: pnpm run build
+      - name: Notify on failure - Build
+        if: failure()
+        run: |
+          curl -X POST "$BOT_SERVER_URL" \
+               -H "Content-Type: application/json" \
+               -d "{\"status\": \"fail\", \"message\": \"❌ Build failed!\", 
+               \"repository\": \"$REPO_LINK\", \"triggered_by\": \"$GITHUB_ACTOR\", 
+               \"commit_hash\": \"$COMMIT_HASH\", \"change_log\": \"$COMMIT_MESSAGE\", 
+               \"time\": \"$DEPLOY_TIME\"}"
+          exit 1
 
-      - name: Upload build artifacts
+      - name: Package production files
+        run: tar -czf production-files.tar.gz dist
+
+      - name: Upload production files
         uses: actions/upload-artifact@v4
         with:
           name: production-files
-          path: ./dist
+          path: production-files.tar.gz
 
   deploy_to_render:
     name: Deploy to Render
@@ -67,33 +106,28 @@ jobs:
           RENDER_SERVICE_ID: ${{ secrets.RENDER_SERVICE_ID }}
           RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
         run: |
-          curl -X POST "https://api.render.com/v1/services/$RENDER_SERVICE_ID/deploys" \
+          RESPONSE=$(curl -X POST "https://api.render.com/v1/services/$RENDER_SERVICE_ID/deploys" \
                -H "Accept: application/json" \
-               -H "Authorization: Bearer $RENDER_API_KEY"
-
-  notify_discord:
-    name: Notify Discord
-    needs: deploy_to_render
-    runs-on: ubuntu-latest
-    env:
-      BOT_SERVER_URL: "https://discord-notify-bot-jw61.onrender.com/send"
-      REPO_LINK: "https://github.com/${{ github.repository }}"
-      GITHUB_ACTOR: ${{ github.actor }}
-      COMMIT_HASH: ${{ github.sha }}
-      COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
-      DEPLOY_TIME: ${{ github.event.head_commit.timestamp }}
-
-    steps:
-      - name: Send Deployment Notification
-        run: |
-          STATUS="success"
-          MESSAGE="✅ Deployment successful!"
+               -H "Authorization: Bearer $RENDER_API_KEY" \
+               -w "%{http_code}" -o /dev/null)
           
-          if [ "${{ job.status }}" != "success" ]; then
-            STATUS="fail"
-            MESSAGE="❌ Deployment failed!"
+          if [ "$RESPONSE" != "200" ]; then
+            curl -X POST "$BOT_SERVER_URL" \
+               -H "Content-Type: application/json" \
+               -d "{\"status\": \"fail\", \"message\": \"❌ Render deployment failed!\", 
+               \"repository\": \"$REPO_LINK\", \"triggered_by\": \"$GITHUB_ACTOR\", 
+               \"commit_hash\": \"$COMMIT_HASH\", \"change_log\": \"$COMMIT_MESSAGE\", 
+               \"time\": \"$DEPLOY_TIME\"}"
+            exit 1
           fi
 
-          curl -X POST "$BOT_SERVER_URL" \
-               -H "Content-Type: application/json" \
-               -d "{\"status\": \"$STATUS\", \"message\": \"$MESSAGE\", \"repository\": \"$REPO_LINK\", \"triggered_by\": \"$GITHUB_ACTOR\", \"commit_hash\": \"$COMMIT_HASH\", \"change_log\": \"$COMMIT_MESSAGE\", \"time\": \"$DEPLOY_TIME\"}"
+  notify_discord:
+    name: Notify Discord on Success
+    needs: deploy_to_render
+    runs-on: ubuntu-latest
+    if: success()
+
+    steps:
+      - name: Send success notification to Discord
+        run: |
+          curl -X POST "$BOT_SERVER_URL"
