@@ -93,20 +93,9 @@ jobs:
           RENDER_SERVICE_ID: ${{ secrets.RENDER_SERVICE_ID }}
           RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
         run: |
-          RESPONSE=$(curl -X POST "https://api.render.com/v1/services/$RENDER_SERVICE_ID/deploys" \
+          curl -X POST "https://api.render.com/v1/services/$RENDER_SERVICE_ID/deploys" \
                -H "Accept: application/json" \
-               -H "Authorization: Bearer $RENDER_API_KEY" \
-               -w "%{http_code}" -o /dev/null)
-          
-          if [ "$RESPONSE" != "200" ]; then
-            curl -X POST "$BOT_SERVER_URL" \
-               -H "Content-Type: application/json" \
-               -d "{\"status\": \"fail\", \"message\": \"❌ Render deployment failed!\", 
-               \"repository\": \"$REPO_LINK\", \"triggered_by\": \"$GITHUB_ACTOR\", 
-               \"commit_hash\": \"$COMMIT_HASH\", \"change_log\": \"$COMMIT_MESSAGE\", 
-               \"time\": \"$DEPLOY_TIME\"}"
-            exit 1
-          fi
+               -H "Authorization: Bearer $RENDER_API_KEY"
 
   notify_discord:
     name: Notify Discord
