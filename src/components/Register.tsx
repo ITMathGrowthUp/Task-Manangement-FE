@@ -1,23 +1,23 @@
-import { useState } from 'react'
-import { useAuth } from '../context/AuthContext.tsx'
-import { useNavigate } from 'react-router-dom'
+import { useState } from 'react';
+import { useAuth } from '../context/AuthContext.tsx';
+import { useNavigate } from 'react-router-dom';
 
 export function Register() {
-  const [username, setUsername] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const { handleRegister, error } = useAuth()
-  const navigate = useNavigate()
+  const { handleRegister, error } = useAuth();
+  const navigate = useNavigate();
 
   const _handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    const isSuccess = await handleRegister(username, password, email)
+    e.preventDefault();
+    const isSuccess = await handleRegister(username, password, email);
 
     if (isSuccess) {
-      navigate('/')
+      navigate('/');
     }
-  }
+  };
 
   return (
     <div className='register-container'>
@@ -47,11 +47,17 @@ export function Register() {
 
         <div className='form-group'>
           <label>Email:</label>
-          <input type='email' value={email} onChange={(e) => setEmail(e.target.value)} placeholder='value' required />
+          <input
+            type='email'
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder='value'
+            required
+          />
         </div>
         {error && <p className='error'>{error}</p>}
         <button type='submit'>Sign up</button>
       </form>
     </div>
-  )
+  );
 }

@@ -1,4 +1,4 @@
-body{
+body {
   margin: 0;
   max-width: 100%;
   overflow-x: hidden;
@@ -37,29 +37,29 @@ a:hover {
   flex-direction: column;
 }
 
-.login-container > h1{
+.login-container > h1 {
   font-size: 3em;
   color: white;
   text-decoration: underline;
   text-align: left;
 }
 
-.login-main-container{
+.login-main-container {
   display: flex;
   gap: 5em;
 }
 
-.login-picture{
+.login-picture {
   width: 60%;
   position: relative;
 }
-.login-picture > img{
+.login-picture > img {
   position: absolute;
   left: 0;
   width: 100%;
 }
 
-.login{
+.login {
   width: 40%;
   background-color: white;
   display: flex;
@@ -82,26 +82,26 @@ a:hover {
   height: 2.5em;
 }
 
-.login-form-group{
+.login-form-group {
   display: flex;
   flex-direction: column;
   gap: 1em;
 }
 
-.login-form-group > label{
+.login-form-group > label {
   font-size: large;
   font-weight: 1000;
 }
 
-.login-form-group > input{
+.login-form-group > input {
   height: 2em;
   padding: 1em;
-  font-size: 1em;  
+  font-size: 1em;
   border: 1px solid #ccc;
   border-radius: 0.5em;
 }
 
-.login-others{
+.login-others {
   display: flex;
   flex-direction: column;
   border: none;
@@ -145,7 +145,7 @@ a:hover {
   justify-self: center;
 }
 
-.login-anothers{
+.login-anothers {
   border-top: 0.1em solid #ccc;
   padding: 1em;
   display: flex;
