@@ -1,4 +1,4 @@
-import { loginApi, registerApi } from '../base';
+import { loginApi, registerApi } from '../services';
 import { createContext, ReactNode, useContext, useState } from 'react';
 
 // todo: destructure
