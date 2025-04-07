@@ -1,7 +1,5 @@
 body {
   margin: 0;
-  max-width: 100%;
-  overflow-x: hidden;
   font-size: 1vw;
 }
 
@@ -31,14 +29,14 @@ a:hover {
 .login-container {
   background-color: #dad6d6;
   min-height: 100vh;
-  width: calc(100vw - 6em);
+  max-width: 100%;
   display: flex;
   padding: 1em 3em;
   flex-direction: column;
 }
 
 .login-container > h1 {
-  font-size: 3em;
+  font-size: 3rem;
   color: white;
   text-decoration: underline;
   text-align: left;
@@ -78,8 +76,13 @@ a:hover {
   background-color: black;
   color: white;
   border-radius: 0.5em;
-  font-size: 1.5em;
+  font-size: 1.5rem;
   height: 2.5em;
+}
+
+.login > form > button:hover {
+  background-color: white;
+  color: black;
 }
 
 .login-form-group {
@@ -89,14 +92,14 @@ a:hover {
 }
 
 .login-form-group > label {
-  font-size: large;
+  font-size: 1.2rem;
   font-weight: 1000;
 }
 
 .login-form-group > input {
   height: 2em;
   padding: 1em;
-  font-size: 1em;
+  font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 0.5em;
 }
@@ -119,7 +122,7 @@ a:hover {
   border-radius: 8px;
   border: 1px solid transparent;
   background-color: white;
-  font-size: 1em;
+  font-size: 1rem;
   font-weight: 500;
   font-family: inherit;
   cursor: pointer;
@@ -164,4 +167,189 @@ a:hover {
   button {
     background-color: #f9f9f9;
   }
+}
+
+.home-container{
+  background-color: #F0F1FF;
+  width: 100%;
+  height: 100vh;
+}
+
+.gray-hover:hover{
+  background-color: #E8E8E8;
+}
+
+.home-content{
+  padding: 0.5em;
+}
+
+.header-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.box-letter{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.left-header{
+  margin-right: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.left-header-workspace{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: #DADBE8;
+  gap: 0.5em;
+  padding: 0.5em;
+  font-weight: bold;
+  border-radius: 0.5em;
+}
+
+.left-header-workspace > .box-letter{
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 0.5em;
+  color: white;
+  background-color: #0E9888;
+}
+
+.left-header-icon{
+  display: flex;
+  gap: 2em;
+  align-items: center;
+}
+
+.left-header-icon div:first-child{
+  height: 1em;
+  border-left: 0.1px groove gray;
+}
+
+.left-header-icon > div{
+  padding: 0.2em;
+}
+
+.center-header{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.2em;
+}
+
+.center-header-searchbar{
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5em;
+  width: max(300px, 30vw);
+  padding: 0.5em;
+  border-radius: 0.5em;
+  border: 0.1px groove #E8E8E8;
+}
+
+.center-header-searchbar > img{
+  width: 1.5em;
+}
+
+.searchbar-text{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.searchbar-text > p {
+  margin: 0;
+}
+
+.center-header-task{
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5em;
+  font-weight: bold;
+  padding: 0.5em;
+  border-radius: 0.5em;
+  border: 0.1px groove #E8E8E8;
+}
+
+.center-header-task > .box-letter{
+  background-color: #5A43D6;
+  height: 1em;
+  width: 1em;
+  border-radius: 50%;
+}
+
+.center-header-task img{
+  width: 0.8em;
+}
+
+
+.right-header{
+  margin-left: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.right-header-icons{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.2em;
+}
+
+.right-header-icons > div{
+  padding: 0.2em;
+}
+
+.right-header-icons img {
+  width: 1em;
+}
+
+.right-header-options{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-weight: bold;
+  gap: 0.5em;
+  border-radius: 1em;
+}
+
+.right-header-options > .box-letter{
+  position: relative;
+  background-color: #5A43D6;
+  color: white;
+  height: 2em;
+  width: 2em;
+  border-radius: 50%;
+}
+
+.right-header-status{
+  position: absolute; 
+  bottom: 0; 
+  right: 0; 
+  width: 0.5em;
+  height: 0.5em; 
+  background-color: green;
+  border: 0.2em solid #F0F1FF;
+  border-radius: 50%; 
+}
+
+.right-header-options > img {
+  width: 0.5em;
 }
