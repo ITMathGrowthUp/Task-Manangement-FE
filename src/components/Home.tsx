@@ -3,7 +3,7 @@
 export function Home() {
   return (
     <div className="home-container">
-        <div className="home-content">
+        <div className="home-page">
             <div className="header-container">
                 <div className="left-header">
                     <div className="left-header-workspace gray-hover">
@@ -60,7 +60,48 @@ export function Home() {
                         <img src="chevron-down.svg" alt="" />
                     </div>
                 </div>
-            
+            </div>
+            <div className="home-content">
+                <div className="sidebar-container">
+                    <div className="sidebar-top">
+                        <div className="sidebar-navigate">
+                            <div className="white-active">
+                                <img src="home.svg" alt="" />
+                            </div>
+                            <p>Home</p>
+                        </div>
+                        <div className="sidebar-navigate sidebar-hover-child">
+                            <div>
+                                <img src="home.svg" alt="" />
+                            </div>
+                            <p>My Tasks</p>
+                        </div>
+                        <div className="sidebar-navigate sidebar-hover-child">
+                            <div>
+                                <img src="home.svg" alt="" />
+                            </div>
+                            <p>My Tasks</p>
+                        </div>
+                    </div>
+
+                    <div className="sidebar-bottom">
+                        <div className="sidebar-invite sidebar-hover-child">
+                            <div className="sidebar-invite-image">
+                                <img src="home.svg" alt="" />
+                                <img src="plus.svg" alt="" />
+                            </div>
+                            <p>Invite</p>
+                        </div>
+                        <div className="sidebar-settings">
+                            <div className="sidebar-hover">
+                                <img src="home.svg" alt="" />
+                            </div>
+                            <div className="sidebar-hover">
+                                <img src="home.svg" alt="" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
