@@ -255,7 +255,7 @@ a:hover {
   display: flex;
   align-items: center;
   gap: 0.5em;
-  width: max(300px, 30vw);
+  width: max(300px, 30em);
   padding: 0.5em;
   border-radius: 0.5em;
   border: 0.1px groove #E8E8E8;
@@ -356,7 +356,9 @@ a:hover {
 
 .home-content{
   flex-grow: 1;
-  padding: 0.5em 0em;
+  display: flex;
+  flex-direction: row;
+  padding: 0.2em 0em;
 }
 
 .white-active{
@@ -377,7 +379,6 @@ a:hover {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  height: 100%;
   width: 70px;
   background-color: #2B216A;
   padding-top: 0.5em;
@@ -451,4 +452,80 @@ a:hover {
 .sidebar-settings > div {
   padding: 0.2em;
   border-radius: 0.5em;
+}
+
+/* Home page side content */
+.side-container{
+  margin-left: 1em;
+  background-color: white;
+  padding: 1em;
+  border-top-left-radius: 1em;
+  border-bottom-left-radius: 1em;
+  border: 0.1px groove #E8E8E8;
+  width: max(15em, 150px);
+}
+
+.side-container p{
+  margin: 0;
+}
+
+.side-container img{
+  width: 1em;
+}
+
+.side-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: bold;
+}
+
+.side-header-icon{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.side-header-close{
+  padding: 0.2em;
+  border-radius: 0.2em;
+}
+.side-header-close:hover{
+  background-color: #F0F0F0;
+}
+
+.side-header-icon > .box-letter{
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 50%;
+  color: white;
+  background-color: #5A43D6;
+}
+
+.side-header-icon > .box-letter:hover{
+  background-color: #553ED0;
+}
+
+.side-content{
+  display: flex;
+  flex-direction: row;
+  gap: 0.5em;
+  margin-top: 0.5em;
+  padding: 0.2em 0.5em;
+  color: gray;
+  font-weight: 400;
+  border-radius: 0.5em;
+}
+
+.side-content-active{
+  background-color: #E5E6FF;
+}
+
+.side-content:hover{
+  background-color: #E0E0E0;
+}
+
+.side-content-active:hover{
+  background-color: #E5E6FF;
 }

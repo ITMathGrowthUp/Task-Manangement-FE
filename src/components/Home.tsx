@@ -102,6 +102,38 @@ export function Home() {
                         </div>
                     </div>
                 </div>
+
+                <div className="side-container">
+                    <div className="side-header">
+                        <p>My Task</p>
+                        <div className="side-header-icon">
+                            <div className="side-header-close">
+                                <img src="home.svg" alt="" />
+                            </div>
+                            <div className="box-letter">
+                                <img src="plus.svg" alt="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="side-contents">
+                        <div className="side-content side-content-active">
+                            <img src="home.svg" alt="" />
+                            <p>Overview</p>
+                        </div>
+                        <div className="side-content">
+                            <img src="home.svg" alt="" />
+                            <p>Today & Overdue</p>
+                        </div>
+                        <div className="side-content">
+                            <img src="home.svg" alt="" />
+                            <p>Tasks assgined to me</p>
+                        </div>
+                        <div className="side-content">
+                            <img src="home.svg" alt="" />
+                            <p>Personal list</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
