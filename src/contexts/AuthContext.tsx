@@ -1,4 +1,4 @@
-import { loginApi, registerApi } from '../base';
+import { loginApi, registerApi } from '../services';
 import { createContext, ReactNode, useContext, useState } from 'react';
 
 // todo: destructure
@@ -56,6 +56,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       if (!access_token) {
         setError('Invalid username or password');
       } else {
+        localStorage.setItem('accessToken', access_token);
         if (isRememberMe) {
           localStorage.setItem('username', username);
           localStorage.setItem('password', password);
@@ -109,6 +110,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     localStorage.removeItem('username');
     localStorage.removeItem('password');
     localStorage.removeItem('rememberMe');
+    localStorage.removeItem('accessToken');
   };
 
   return (
