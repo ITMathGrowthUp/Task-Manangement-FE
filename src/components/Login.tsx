@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
 import { AuthContextType, useAuth } from '../contexts/AuthContext.tsx';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-export function Login() {
+function Login() {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isRemember, setIsRemember] = useState<boolean>(false);
 
   const authContext: AuthContextType = useAuth();
   const { handleLogout, handleLogin, isAuthenticated, error } = authContext;
+  const navigate = useNavigate();
 
   const _handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -48,13 +49,7 @@ export function Login() {
   // Conditional rendering based on login status
   // todo: routing to homepage
   if (isAuthenticated) {
-    return (
-      <div className='login-container'>
-        <h2>Welcome!</h2>
-        <p>You are logged in as {username}.</p>
-        <button onClick={() => handleLogout()}>Logout</button>
-      </div>
-    );
+    navigate('./home');
   }
 
   return (

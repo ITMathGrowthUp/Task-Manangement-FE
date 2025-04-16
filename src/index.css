@@ -340,14 +340,14 @@ a:hover {
 }
 
 .right-header-status{
-  position: absolute; 
-  bottom: 0; 
-  right: 0; 
+  position: absolute;
+  bottom: 0;
+  right: 0;
   width: 0.5em;
-  height: 0.5em; 
+  height: 0.5em;
   background-color: green;
   border: 0.2em solid #F0F1FF;
-  border-radius: 50%; 
+  border-radius: 50%;
 }
 
 .right-header-options > img {
@@ -433,9 +433,9 @@ a:hover {
 
 .sidebar-invite-image > img:nth-child(2){
   position: absolute;
-  bottom: 20px;   
-  left: 0px; 
-  width: 50px; 
+  bottom: 20px;
+  left: 0px;
+  width: 50px;
   height: 1em;
 }
 
