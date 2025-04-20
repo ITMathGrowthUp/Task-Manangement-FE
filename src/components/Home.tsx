@@ -19,7 +19,11 @@ export function Home() {
           body: urlencoded
         });
 
-        console.log(await response.json());
+        if (response.ok) {
+          alert((await response.json()).message);
+        } else {
+          alert('Failed!');
+        }
       } catch (err) {
         console.error(err);
       }
