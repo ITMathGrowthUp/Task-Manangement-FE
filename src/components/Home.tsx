@@ -1,4 +1,4 @@
-import GridLayout from "./layout/GridLayout.tsx";
+import GridLayout from './layout/GridLayout.tsx';
 
 export function Home() {
   return (

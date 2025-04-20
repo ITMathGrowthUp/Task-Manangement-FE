@@ -1,74 +1,47 @@
 import { useEffect, useState } from 'react';
+import { getTaskApi } from '../../../services';
 
-interface Tasks {
-  id: string;
+interface Task {
+  id: number;
   name: string;
-  status: 'todo' | 'implementing' | 'done';
-  description?: string;
-  priority?: 'low' | 'medium' | 'high';
-  createdAt?: Date;
-  dueDate?: Date;
-  updatedAt?: Date;
-  assignee?: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  timeEstimate: number;
 }
 
-const tempTasks = [
-  {
-    id: 1,
-    name: 'Develop a UI Kit using in project'
-  },
-  {
-    id: 2,
-    name: 'Improve remember me feature'
-  },
-  {
-    id: 3,
-    name: 'Improve UX for home screen'
-  },
-  {
-    id: 4,
-    name: 'Convert all css style to tailwindcss'
-  },
-  {
-    id: 5,
-    name: 'Discuss more about task interface'
-  }
-];
-
 function CardAllTasksDefault() {
-  const [tasks, setTasks] = useState<any[]>([]);
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
 
   const accessToken = localStorage.getItem('accessToken');
 
   useEffect(() => {
-    // const fetchTasks = async () => {
-    setTasks(tempTasks);
-    //   try {
-    //     const urlencoded = new URLSearchParams();
-    //     // Call the getTaskApi with the access token
-    //     const response = await fetch(getTaskApi, {
-    //       method: 'POST',
-    //       headers: {
-    //         Authorization: `Bearer ${accessToken}`,
-    //         'Content-Type': 'application/json'
-    //       },
-    //       body: JSON.stringify(urlencoded)
-    //     });
-    //
-    //     const tasks = await response.json();
-    //
-    //     setTasks(tasks);
-    //   } catch (err) {
-    //     setError('Failed to fetch tasks. Please try again later.');
-    //     console.error(err);
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    // };
-    //
-    // fetchTasks();
+    const fetchTasks = async () => {
+      try {
+        const urlencoded = new URLSearchParams();
+        const response = await fetch(getTaskApi, {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(urlencoded)
+        });
+
+        const tasks = (await response.json()) as Task[];
+
+        setTasks(tasks);
+      } catch (err) {
+        setError('Failed to fetch tasks. Please try again later.');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTasks();
   }, []);
 
   return (
