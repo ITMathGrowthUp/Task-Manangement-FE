@@ -1,6 +1,45 @@
-import GridLayout from './layout/GridLayout.tsx';
+import ManageCardLayout from './layout/GridLayout.tsx';
+import { useState } from 'react';
+import AddTaskModal from './AddTaskModal.tsx';
+import { addTaskApi } from '../services';
 
 export function Home() {
+  const [isAddTaskModalOpen, setIsAddTaskModalOpen] = useState(false);
+  const accessToken = localStorage.getItem('accessToken');
+
+  const handleSubmit = (formData) => {
+    const addTask = async () => {
+      try {
+        const urlencoded = new URLSearchParams(formData);
+        const response = await fetch(addTaskApi, {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          },
+          body: urlencoded
+        });
+
+        if (response.ok) {
+          alert((await response.json()).message);
+        } else {
+          alert('Failed!');
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    addTask();
+  };
+
+  const closeModal = () => {
+    setIsAddTaskModalOpen(false);
+  };
+
+  const openModal = () => {
+    setIsAddTaskModalOpen(true);
+  };
+
   return (
     <div className='home-container'>
       <div className='home-page'>
@@ -31,7 +70,7 @@ export function Home() {
               <div className='box-letter'>
                 <img src='plus.svg' alt='' />
               </div>
-              <span>Task</span>
+              <span onClick={openModal}>Task</span>
             </div>
           </div>
 
@@ -132,9 +171,13 @@ export function Home() {
             </div>
           </div>
 
-          <GridLayout />
+          <ManageCardLayout />
         </div>
       </div>
+
+      {isAddTaskModalOpen && (
+        <AddTaskModal isOpen={isAddTaskModalOpen} onClose={closeModal} onSubmit={handleSubmit} />
+      )}
     </div>
   );
 }
