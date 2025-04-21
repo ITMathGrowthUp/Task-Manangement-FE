@@ -1,4 +1,4 @@
-import CardAllTasksDefault from '../home/cards/CardAllTasksDefault.tsx';
+import CardAllTasksDefault from '../../features/home/components/cards/CardAllTasksDefault.tsx';
 
 const GridLayout = () => {
   const gridStyle = 'grid grid-cols-2 gap-4 w-full h-full';

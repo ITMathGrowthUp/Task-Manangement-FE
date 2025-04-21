@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { AuthContextType, useAuth } from '../contexts/AuthContext.tsx';
+import { AuthContextType, useAuth } from '../../contexts/AuthContext.tsx';
 import { Link, useNavigate } from 'react-router-dom';
 
 function Login() {
