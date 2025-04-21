@@ -1,8 +1,8 @@
 import './App.css';
-import Login from './components/Login.tsx';
+import Login from './features/auth/Login.tsx';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { Register } from './components/Register.tsx';
-import Home from './components/Home.tsx';
+import { Register } from './features/auth/Register.tsx';
+import Home from './features/home/Home.tsx';
 
 function App() {
   return (
